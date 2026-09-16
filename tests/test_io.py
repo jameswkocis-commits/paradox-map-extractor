@@ -1,5 +1,3 @@
-import json
-
 import geopandas as gpd
 from shapely.geometry import box
 from paradox_mapper.models import ProvinceObservation,ControlPoint
@@ -11,15 +9,7 @@ def test_geojson_and_gpkg_export(tmp_path):
     gdf=gpd.GeoDataFrame({'province_id':[1],'source_r':[10],'source_g':[20],'source_b':[30],'geometry':[box(0,0,2,2)]},crs=None)
     for name in ('out.geojson','out.gpkg'):
         path=tmp_path/name; export_results(gdf,[observation()],path); loaded=gpd.read_file(path,layer='provinces' if name.endswith('gpkg') else None)
-        assert loaded.iloc[0].province_id==1; assert loaded.iloc[0].entity_name=='Rome'
-        if name.endswith('gpkg'):
-            assert loaded.crs is None
-        else:
-            # GeoJSON has no general-purpose "undefined/game coordinates" CRS.
-            # GDAL therefore reports RFC 7946 GeoJSON without a `crs` member as
-            # EPSG:4326 on read, even though the exporter did not assign one.
-            document = json.loads(path.read_text(encoding='utf-8'))
-            assert 'crs' not in document
+        assert loaded.iloc[0].province_id==1; assert loaded.iloc[0].entity_name=='Rome'; assert loaded.crs is None
 
 def test_project_roundtrip_relative_paths(tmp_path):
     raster=tmp_path/'provinces.bmp'; raster.write_bytes(b'x'); path=tmp_path/'campaign.pme.json'

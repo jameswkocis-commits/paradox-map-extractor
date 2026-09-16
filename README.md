@@ -81,8 +81,6 @@ Four pairs determine a homography. With more pairs, OpenCV RANSAC rejects outlie
 
 GeoPackage contains a `provinces` layer and, where available, dissolved `entities` and `low_confidence` layers. Province attributes include source province RGB, detected political RGB, cluster/entity, confidence, visible fraction, and source image. Drag the `.gpkg` into QGIS, choose `provinces`, and categorize by `entity_name` or `cluster_id`. The generated `.qml` is a minimal style scaffold; use the `red`, `green`, and `blue` fields to refine data-defined fill colors. GeoJSON contains one layer. Shapefile uses abbreviated field names due to its ten-character limitation.
 
-GeoPackage is strongly recommended for preserving the intended **undefined CRS**. The exported GeoJSON does not contain a `crs` member, but RFC 7946-oriented readers such as GDAL/GeoPandas may nevertheless report it as EPSG:4326 when reopening it because modern GeoJSON has no portable representation for fictional game-map coordinates. That reader default does not mean the exporter assigned a real-world CRS; treat the numeric values as EU4 coordinates and override or clear the layer CRS in GIS software when necessary.
-
 Because the coordinates are a game grid, QGIS may prompt for a CRS: leave it unset. A future explicit georeferencing stage would be required to combine it with real-world datasets.
 
 ## Project files and multiple screenshots
