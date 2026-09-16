@@ -11,12 +11,15 @@ def parser():
     imp=sub.add_parser('import-map',help='validate and polygonize EU4 map files'); imp.add_argument('raster'); imp.add_argument('definition'); imp.add_argument('output')
     ref=sub.add_parser('reference',help='generate province and boundary reference PNGs'); ref.add_argument('raster'); ref.add_argument('output_dir')
     gui=sub.add_parser('gui',help='launch desktop interface')
+    web=sub.add_parser('web',help='launch the local web interface'); web.add_argument('--host',default='127.0.0.1'); web.add_argument('--port',type=int,default=5000)
     return p
 
 def main(argv=None):
     args=parser().parse_args(argv); logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
     if args.command=='gui':
         from paradox_mapper.gui.app import main as gui_main; return gui_main()
+    if args.command=='web':
+        from paradox_mapper.web.app import main as web_main; return web_main(args.host,args.port)
     if args.command=='import-map':
         raster,definition,frame=EU4Adapter().import_map(args.raster,args.definition); save_cache(frame,args.output,args.raster)
         print(json.dumps({'provinces':len(frame),'warnings':definition.warnings,'cache':str(args.output)})); return 0
