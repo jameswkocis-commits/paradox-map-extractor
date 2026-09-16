@@ -19,7 +19,19 @@ python -m pip install --upgrade pip
 python -m pip install -e '.[gui]'
 ```
 
-For tests, use `python -m pip install -e '.[gui,dev]'`. If GeoPandas installation is difficult, a conda-forge environment containing `gdal rasterio geopandas pyogrio opencv scikit-learn pyside6` is a practical alternative.
+For tests, use `python -m pip install -e '.[gui,web,dev]'`. If GeoPandas installation is difficult, a conda-forge environment containing `gdal rasterio geopandas pyogrio opencv scikit-learn pyside6` is a practical alternative.
+
+## Browser workflow
+
+Install the web extra and start the local server:
+
+```bash
+python -m pip install -e '.[web]'
+paradox-map web
+# Visit http://127.0.0.1:5000
+```
+
+The guided page accepts your owned `provinces.bmp`, `definition.csv`, and gameplay screenshot. Match at least four recognizable points between the screenshot and generated boundary reference, run the analysis, inspect detected colors and confidence, then download the classified province geometry as GeoJSON. Processing and temporary uploads stay on the local machine; binding `--host 0.0.0.0` is available when intentionally sharing the interface on a trusted network.
 
 ## EU4 inputs
 
