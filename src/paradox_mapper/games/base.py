@@ -1,0 +1,6 @@
+from abc import ABC, abstractmethod
+class GameAdapter(ABC):
+    @abstractmethod
+    def import_map(self, raster_path, definition_path): ...
+    @abstractmethod
+    def metadata(self) -> dict: ...
